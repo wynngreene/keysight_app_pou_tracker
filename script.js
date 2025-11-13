@@ -146,7 +146,9 @@ document.getElementById('exportTxtBtn').addEventListener('click', () => {
   
   savedData.forEach(entry => {
     txt += `Employee Name: ${entry.employeeName}\n`;
-    txtn`;
+    txt += `Job Number: ${entry.jobNumber}\n`;
+    txt += `Part Number: ${entry.partNumber}\n`;
+    txt += `Quantity: ${entry.quantity}\n`;
     txt += `Date Pulled: ${entry.datePulled}\n`;
     txt += '----------\n';
   });
