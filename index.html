@@ -36,11 +36,20 @@
           <label for="quantity1">Quantity:</label>
           <input type="number" id="quantity1" name="quantity" min="1" required>
 
+          <label for="inventoryCount1">Inventory Count (at time):</label>
+          <input type="number" id="inventoryCount1" name="inventoryCount" min="0">
+
+          <label for="adjustCount1">Adjust Count:</label>
+          <input type="number" id="adjustCount1" name="adjustCount" placeholder="Optional">
+
           <label for="datePulled1">Date Pulled:</label>
           <div class="date-row">
             <button id="todayDateBtn" type="button">Today</button>
             <input type="date" id="datePulled1" name="datePulled" required>
           </div>
+
+          <label for="notes1">Notes:</label>
+          <input type="text" id="notes1" name="notes" placeholder="Optional notes...">
 
           <input type="submit" class="full-width-btn" value="Submit Entry">
         </form>
@@ -79,7 +88,12 @@
             <th>Job Number</th>
             <th>Part Number</th>
             <th>Quantity</th>
+            <th>Inventory Count</th>
+            <th>Adjust Count</th>
             <th>Date Pulled</th>
+            <th>Time of Request</th>
+            <th>Fulfilled</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
