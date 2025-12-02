@@ -1,158 +1,179 @@
-/* ========== General Styles ========== */
+/* ========== Global Styles ========== */
 body {
   font-family: Arial, sans-serif;
   margin: 40px;
-  background-color: #f4f4f4;
+  background: #f4f4f4;
 }
-
 h1 {
   text-align: center;
   margin-bottom: 20px;
 }
+main {
+  max-width: 1300px;
+  margin: 0 auto;
+}
 
-/* ========== Card and Form Styling ========== */
+/* ========== Card Layout ========== */
+.container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 30px;
+}
 .card {
   background: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  flex: 1;
+  min-width: 0;
+}
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
 }
 
+/* ========== Form Inputs ========== */
 form {
   display: flex;
   flex-direction: column;
 }
-
 label {
-  margin-top: 15px;
+  margin-top: 12px;
   font-weight: bold;
 }
-
-/* Group Today button + date nicely */
-.date-row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-top: 5px;
-}
-
-/* ========== Inputs and Dropdowns ========== */
 input[type="text"],
 input[type="number"],
 input[type="date"],
 select {
-  width: 100%;
   padding: 8px;
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
-  background-color: #fff;
+  background: #fff;
   box-sizing: border-box;
 }
-
 select:focus,
 input:focus {
   outline: 2px solid #007BFF;
 }
 
-/* ========== Buttons ========== */
-
-/* Base button style */
 button,
 input[type="submit"] {
-  background-color: #007BFF;
-  color: white;
-  border: none;
   padding: 10px;
+  background: #007BFF;
+  color: #fff;
+  border: none;
   border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 16px;
+  margin-top: 15px;
+  white-space: nowrap;
 }
-
-/* Full-width buttons used in forms */
-.full-width-btn {
-  width: 100%;
-  margin-top: 20px;
-}
-
-/* Today button inside date-row */
-#todayDateBtn {
-  flex: 0 0 auto;
-}
-
-/* Date input takes remaining space */
-.date-row input[type="date"] {
-  flex: 1;
-}
-
 button:hover,
 input[type="submit"]:hover {
-  background-color: #0056b3;
+  background: #0056b3;
 }
 
-button:focus,
-input[type="submit"]:focus {
-  outline: 2px solid #0056b3;
-  outline-offset: 2px;
+.small-text {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
 }
 
-/* Export Buttons container */
-.export-buttons {
-  text-align: center;
-  margin-top: 20px;
-}
-
-#exportBtn,
-#exportTxtBtn {
-  max-width: 200px;
-  margin: 10px;
-  display: inline-block;
-}
-
-/* ========== Container Layout ========== */
-.container {
+/* Inline row (Parts + Qty + Button, Date + Today) */
+.inline-row {
   display: flex;
-  flex-direction: row; /* Side by side by default */
-  gap: 1rem; /* Space between items */
-  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  margin-top: 5px;
 }
-
-.container > .card {
-  flex: 1; /* Equal width for children */
+.inline-row input[type="text"],
+.inline-row input[type="number"],
+.inline-row input[type="date"] {
+  flex: 1 1 auto;
+  min-width: 0;
 }
-
-/* ========== Responsive Design ========== */
-@media (max-width: 768px) {
-  body {
-    margin: 10px;
+#addPartBtn {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+}
+@media (max-width: 500px) {
+  .inline-row {
+    flex-direction: column;
+    align-items: stretch;
   }
-
-  .container {
-    flex-direction: column; /* Stack vertically */
+  #addPartBtn {
+    width: 100%;
   }
 }
 
-/* ========== Table Styling ========== */
-table {
-  margin: 40px auto;
-  width: 90%;
-  border-collapse: collapse;
+/* Request summary box */
+#requestSummary {
+  background: #f7f7f7;
+  padding: 10px;
+  border-radius: 4px;
+  white-space: pre-line;
+  min-height: 40px;
+  margin-top: 8px;
+}
+
+.export-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* ========== Records Table ========== */
+.records-card {
   background: white;
+  padding: 20px;
+  border-radius: 8px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-
+table {
+  margin-top: 15px;
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
 th, td {
-  padding: 12px;
+  padding: 8px;
   border: 1px solid #ccc;
   text-align: center;
+  font-size: 13px;
 }
-
 th {
-  background-color: #007BFF;
+  background: #007BFF;
   color: white;
 }
-
+tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
 tbody tr:hover {
-  background-color: #f1f1f1;
+  background: #eef;
+}
+
+.status-open {
+  color: #c0392b;
+  font-weight: bold;
+}
+.status-fulfilled {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+/* Tiny delete button in parts list */
+.part-delete-btn {
+  margin-left: 8px;
+  padding: 2px 6px;
+  font-size: 10px;
+  background: #c0392b;
+}
+.part-delete-btn:hover {
+  background: #922b21;
 }
