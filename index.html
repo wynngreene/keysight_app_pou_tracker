@@ -4,107 +4,129 @@
   <meta charset="UTF-8">
   <title>PoU Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
-  <header>
-    <h1>PoU Tracker</h1>
-  </header>
+<body>
+  <h1>PoU Tracker</h1>
 
   <main>
+    <!-- =======================
+         3 ROLE CARDS
+         ======================= -->
     <div class="container">
-      <!-- Card 1: Main Entry -->
+
+      <!-- CARD 1: PoU REQUEST (Main User) -->
       <div class="card">
-        <h3>USER Display</h3>
-        <form class="partsForm" id="form1" autocomplete="off">
+        <h3>PoU Request (Main User)</h3>
+        <p class="small-text">Operators request additional or replacement parts here.</p>
 
-          <label for="employeeName1">Employee Name:</label>
-          <select id="employeeName1" name="employeeName" required>
+        <form id="pouForm" autocomplete="off">
+          <label for="employeeName">Employee Name:</label>
+          <select id="employeeName" required>
             <option value="" disabled selected>Select Employee</option>
+            <!-- Example options; edit as needed -->
+            <option value="Eden">Eden</option>
+            <option value="Nikki">Nikki</option>
+            <option value="Operator A">Operator A</option>
           </select>
 
-          <label for="partNumber1">Part Number:</label>
-          <select id="partNumber1" name="partNumber" required>
-            <option value="" disabled selected>Select Part</option>
-          </select>
+          <label for="jobNumber">Job Number:</label>
+          <input type="text" id="jobNumber" required>
 
-          <label for="jobNumber1">Job Number:</label>
-          <input type="text" id="jobNumber1" name="jobNumber" required>
-
-          <label for="quantity1">Quantity:</label>
-          <input type="number" id="quantity1" name="quantity" min="1" required>
-
-          <label for="inventoryCount1">Inventory Count (at time):</label>
-          <input type="number" id="inventoryCount1" name="inventoryCount" min="0">
-
-          <label for="adjustCount1">Adjust Count:</label>
-          <input type="number" id="adjustCount1" name="adjustCount" placeholder="Optional">
-
-          <label for="datePulled1">Date Pulled:</label>
-          <div class="date-row">
-            <button id="todayDateBtn" type="button">Today</button>
-            <input type="date" id="datePulled1" name="datePulled" required>
+          <!-- Inline Parts Needed -->
+          <label>Parts Needed:</label>
+          <div class="inline-row">
+            <input type="text" id="partNumberInput" placeholder="Part Number">
+            <input type="number" id="quantityInput" placeholder="Qty" min="1">
+            <button type="button" id="addPartBtn">Add</button>
           </div>
 
-          <label for="notes1">Notes:</label>
-          <input type="text" id="notes1" name="notes" placeholder="Optional notes...">
+          <!-- List of parts added to this request -->
+          <ul id="partsList" class="small-text" style="margin-top:10px; padding-left:18px;"></ul>
 
-          <input type="submit" class="full-width-btn" value="Submit Entry">
+          <label for="notes">Notes (max 100 chars):</label>
+          <input type="text" id="notes" maxlength="100" placeholder="Reason, defect, etc.">
+
+          <label for="datePulled">Date Pulled:</label>
+          <div class="inline-row">
+            <button type="button" id="todayBtn" style="flex:0 0 auto;">Today</button>
+            <input type="date" id="datePulled" required>
+          </div>
+
+          <input type="submit" value="Submit PoU Request">
         </form>
       </div>
 
-      <!-- Card 2: Add Dropdown Options -->
+      <!-- CARD 2: STOCKROOM FULFILLMENT -->
       <div class="card">
-        <h3>ADMIN Display</h3>
+        <h3>Stockroom Fulfillment</h3>
+        <p class="small-text">Stockroom records inventory counts and adjustments.</p>
 
-        <form id="addEmployeeForm" autocomplete="off">
-          <label for="employeeName2">Add Employee Name:</label>
-          <input type="text" id="employeeName2" name="employeeName">
-          <input type="submit" class="full-width-btn" value="Add Employee">
-        </form>
+        <label for="requestSelect">Select PoU Request:</label>
+        <select id="requestSelect">
+          <option value="" disabled selected>Select a request</option>
+        </select>
 
-        <form id="addPartForm" autocomplete="off">
-          <label for="partNumber2">Add Part Number:</label>
-          <input type="text" id="partNumber2" name="partNumber">
-          <input type="submit" class="full-width-btn" value="Add Part">
+        <div id="requestSummary"></div>
+
+        <form id="stockroomForm" autocomplete="off">
+          <label for="inventoryCount">Inventory Count (at time):</label>
+          <input type="number" id="inventoryCount" min="0">
+
+          <label for="adjustCount">Adjust Count (if needed):</label>
+          <input type="number" id="adjustCount">
+
+          <label for="stockroomInitials">Stockroom Initials:</label>
+          <input type="text" id="stockroomInitials" maxlength="5" required>
+
+          <input type="submit" value="Mark as Fulfilled">
         </form>
+      </div>
+
+      <!-- CARD 3: ADMIN TOOLS -->
+      <div class="card">
+        <h3>Admin Tools</h3>
+        <p class="small-text">Admins can view high-level stats and export logs.</p>
+
+        <div class="export-buttons">
+          <button id="exportCsvBtn">Export CSV</button>
+        </div>
+
+        <div id="adminStats" class="small-text"></div>
       </div>
     </div>
 
-    <!-- Export Buttons -->
-    <div class="export-buttons">
-      <button id="exportBtn">Export to CSV</button>
-      <button id="exportTxtBtn">Export to TXT</button>
-    </div>
-
-    <!-- Data Table -->
-    <section aria-label="Pulled Parts Table">
-      <table id="dataTable">
+    <!-- =======================
+         RECORDS TABLE (Bottom)
+         ======================= -->
+    <div class="records-card">
+      <h3>PoU Records (All Requests)</h3>
+      <table id="recordsTable">
         <thead>
           <tr>
-            <th>Employee Name</th>
-            <th>Job Number</th>
-            <th>Part Number</th>
-            <th>Quantity</th>
-            <th>Inventory Count</th>
-            <th>Adjust Count</th>
+            <th>#</th>
+            <th>Employee</th>
+            <th>Job</th>
+            <th>Parts</th>
             <th>Date Pulled</th>
-            <th>Time of Request</th>
-            <th>Fulfilled</th>
+            <th>Time Requested</th>
             <th>Notes</th>
+            <th>Inventory Count</th>
+            <th>Adjust</th>
+            <th>Initials</th>
+            <th>Status</th>
+            <th>Fulfilled Time</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- Entries populate here -->
-        </tbody>
+        <tbody id="recordsTbody"></tbody>
       </table>
-    </section>
+    </div>
   </main>
 
   <!-- JS -->
   <script src="script.js"></script>
-
 </body>
 </html>
